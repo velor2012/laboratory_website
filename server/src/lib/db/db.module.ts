@@ -1,7 +1,15 @@
 import { Module, Global } from "@nestjs/common";
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Adviser } from "src/adviser/entities/adviser.entity";
+import { Competition } from "src/competition/entities/competition.entity";
 import { configService } from 'src/lib/config.service'
-import { User } from "src/user/user.entity";
+import { Paper } from "src/paper/entities/paper.entity";
+import { Patent } from "src/patent/entities/patent.entity";
+import { Project } from "src/project/entities/project.entity";
+import { Researcher } from "src/researcher/entities/researcher.entity";
+import { Stu } from "src/stu/entities/stu.entity";
+import { Teacher } from "src/teacher/entities/teacher.entity";
+import { User } from "src/user/entities/user.entity";
 let my_module =   TypeOrmModule.forRootAsync({
   useFactory() { 
     return {
@@ -13,8 +21,17 @@ let my_module =   TypeOrmModule.forRootAsync({
     database: configService.getValue('DB_DATABASE'),
     connectTimeout:100000,
     acquireTimeout:100000,
+    // synchronize:true,
     entities: [
-      User
+      User,
+      Project,
+      Paper,
+      Patent,
+      Stu,
+      Teacher,
+      Adviser,
+      Researcher,
+      Competition,
     ],
   }
 }

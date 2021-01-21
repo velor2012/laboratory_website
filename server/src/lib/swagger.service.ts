@@ -4,7 +4,7 @@ import { configService } from './config.service';
 
 export function initSwagger(app: INestApplication): OpenAPIObject {
   const options = new DocumentBuilder()
-    .setTitle('博客api')
+    .setTitle('网站api')
     .setDescription('The cats API description')
     .setVersion('1.0')
     .addTag('blog')

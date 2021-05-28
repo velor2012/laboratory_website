@@ -8,9 +8,9 @@ import { User } from 'src/user/entities/user.entity';
 @Entity('patent')
 export class Patent {
   @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @IsString()
   @IsNotEmpty()

@@ -8,7 +8,7 @@ export class Competition {
   @IsNumber()
   @IsOptional()
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @IsString()
   @ApiProperty({required: true,description: '比赛名' })

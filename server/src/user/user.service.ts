@@ -20,7 +20,7 @@ export class UserService {
 
   async findAll(pageSize:number, page:number,withRelation:boolean = false) {
     return await this.usersRepository.find({skip:pageSize * (page - 1),take:pageSize,
-      relations:withRelation?["papers","competitions","projects","patents"]:[]});
+      relations:withRelation?["papers","competitions","projects","patents",'stu','researcher','teacher','adviser']:[]});
   }
 
   async findAllName() {
@@ -32,12 +32,12 @@ export class UserService {
   }
 
   async findOne(id: number,withRelation:boolean = false) {
-    return await this.usersRepository.findOne(+id,{relations:withRelation?["papers","competitions","projects","patents"]:[]});
+    return await this.usersRepository.findOne(+id,{relations:withRelation?["papers","competitions","projects","patents",'stu','researcher','teacher','adviser']:[]});
   }
   async findOneByName(username: string,selectPassword:boolean = false,withRelation:boolean = false) {
     if(selectPassword){
       return await this.usersRepository.findOne({username:username},{select:["password","username","id","role"],
-      relations:withRelation?["papers","competitions","projects","patents"]:[]});
+      relations:withRelation?["papers","competitions","projects","patents",'stu','researcher','teacher','adviser']:[]});
     }
     return await this.usersRepository.findOne({username:username});
   }

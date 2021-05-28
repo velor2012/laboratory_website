@@ -39,7 +39,7 @@
             >
               <v-avatar color="primary" size="128">
                 <v-img
-                  :src="teacher.avatar ? teacher.avatar : 'default.jpg'"
+                  :src="teacher.user && teacher.user.avatar ? teacher.user.avatar : 'default.jpg'"
                 ></v-img>
               </v-avatar>
               <span class="pt-4 text-body-1">{{ teacher.name }}</span>
@@ -59,7 +59,7 @@
             >
               <v-avatar color="primary" size="128">
                 <v-img
-                  :src="adviser.avatar ? adviser.avatar : 'default.jpg'"
+                  :src="adviser.user && adviser.user.avatar ? adviser.user.avatar : 'default.jpg'"
                 ></v-img>
               </v-avatar>
               <span class="pt-4 text-body-1">{{ adviser.name }}</span>
@@ -78,7 +78,7 @@
               class="py-2 px-8 d-flex flex-column justify-center align-center"
             >
               <v-avatar color="primary" size="128">
-                <v-img :src="stu.avatar ? stu.avatar : 'default.jpg'"></v-img>
+                <v-img :src="stu.user && stu.user.avatar ? stu.user.avatar : 'default.jpg'"></v-img>
               </v-avatar>
               <span class="pt-4 text-body-1">{{ stu.name }}</span>
             </div>
@@ -180,14 +180,14 @@ export default {
   },
   async mounted() {
     let p1 = myTeacherApi
-      .findAllAPI(this.$axios, this.pageSize, this.page)
+      .findAllAPI(this.$axios, 100, 1)
       .then((res) => {
         if (res.success) {
           this.teachers = res.data;
         }
       });
     let p2 = myStuApi
-      .findAllInSchoolAPI(this.$axios, this.pageSize, this.page)
+      .findAllInSchoolAPI(this.$axios, 100, 1)
       .then((res) => {
         if (res.success) {
           this.inSchoolStus = res.data;
@@ -201,14 +201,14 @@ export default {
         }
       });
     let p4 = myResearcherApi
-      .findAllAPI(this.$axios, this.pageSize, this.page)
+      .findAllAPI(this.$axios, 100,1)
       .then((res) => {
         if (res.success) {
           this.researchers = res.data;
         }
       });
     let p5 = myAdviserApi
-      .findAllAPI(this.$axios, this.pageSize, this.page)
+      .findAllAPI(this.$axios, 100,1)
       .then((res) => {
         if (res.success) {
           this.advisers = res.data;

@@ -13,16 +13,16 @@ export class StuService {
   ) {}
 
   async findAll(pageSize:number, page:number) {
-    return await this.stusRepository.find({skip:pageSize * (page - 1),take:pageSize});
+    return await this.stusRepository.find({skip:pageSize * (page - 1),take:pageSize,relations:['user']});
   }
 
   async findState(state:string, pageSize:number, page:number) {
     // state = state ==
-    return await this.stusRepository.find({skip:pageSize * (page - 1),take:pageSize,where:[{state:state}]});
+    return await this.stusRepository.find({skip:pageSize * (page - 1),take:pageSize,where:[{state:state}],relations:['user']});
   }
 
   async findOne(id: number) {
-    return await this.stusRepository.findOne(id);
+    return await this.stusRepository.findOne(id,{relations:['user']});
   }
 
   async remove(id: number) {

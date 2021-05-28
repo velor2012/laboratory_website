@@ -8,7 +8,7 @@
         新闻
       </v-card-title>
       <v-divider />
-      <v-card-text class="text-body-1" style="textAlign:left">
+      <v-card-text class="text-body-1">
         <v-skeleton-loader
           v-bind="attrs"
           type="list-item-two-line"
@@ -18,7 +18,7 @@
         >
         </v-skeleton-loader>
         <ul v-show="!loading">
-          <li v-for="(patent, i) in patents" :key="i" class="py-3 px-5" style="minHeight:80px">
+          <li v-for="(patent, i) in patents" :key="i" class="py-3 px-5" style="minHeight:50px">
             <div class="d-flex flex-column">
               <div class="d-flex">
                 <div class="text-body-1 list_patent_title px-2 text-main-color">

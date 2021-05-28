@@ -7,7 +7,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import {User as CUser} from 'src/lib/decorator/user.decorator'
 import Auth from 'src/lib/decorator/auth.decorator';
 import LoginDto from './dto/login.dto';
-import { AuthService } from 'src/lib/auth/auth.service';
+import { AuthService } from 'src/lib/auth/local_auth.service';
 import * as _ from 'lodash'
 import { RelationDto } from 'src/lib/common_dto/relation.dto';
 import SearchDTO from 'src/lib/common_dto/search.dto';

@@ -14,6 +14,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   //设置静态资源位置
   app.useStaticAssets(join(__dirname, '..', 'static'));
+  //api文档
   initSwagger(app)
   await app.listen(configService.getValue('PORT'));
 }

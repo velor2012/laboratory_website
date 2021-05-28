@@ -188,7 +188,6 @@ import { Component, Vue } from "vue-property-decorator";
 import MyPatentApi from "@/api/patent";
 import myaxios from "@/plugins/axios";
 import { Form } from "element-ui";
-import { str2array, array2str } from "@/assets/filters";
 import MyUserAPI from "@/api/user";
 @Component({})
 export default class PatentList extends Vue {
@@ -365,7 +364,7 @@ page = 1;
 
     //重新加载数据
     this.loading = true;
-    const result2 = await MyPatentApi.findAllAPI(myaxios, 5, 1);
+    const result2 = await MyPatentApi.findAllAPI(myaxios, this.pageSize, this.page);
     if (result2.success) {
       this.patents = result2.data;
     }

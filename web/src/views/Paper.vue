@@ -8,7 +8,7 @@
         论文
       </v-card-title>
       <v-divider />
-      <v-card-text class="text-body-1" style="textAlign:left">
+      <v-card-text class="text-body-1">
         <v-skeleton-loader
           v-bind="attrs"
           type="list-item-two-line"

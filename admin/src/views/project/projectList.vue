@@ -231,7 +231,6 @@ import { Component, Vue } from "vue-property-decorator";
 import MyProjectApi from "@/api/project";
 import myaxios from "@/plugins/axios";
 import { Form } from "element-ui";
-import { str2array, array2str } from "@/assets/filters";
 import MyUserAPI from "@/api/user";
 import MyPaperAPI from "@/api/paper";
 @Component({
@@ -449,7 +448,7 @@ export default class ProjectList extends Vue {
 
     //重新加载数据
     this.loading = true;
-    const result2 = await MyProjectApi.findAllAPI(myaxios, 5, 1);
+    const result2 = await MyProjectApi.findAllAPI(myaxios, this.pageSize, this.page);
     if (result2.success) {
       this.projects = result2.data;
     }

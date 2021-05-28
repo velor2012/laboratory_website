@@ -1,7 +1,7 @@
 
 import { configService } from 'src/lib/config.service'
 import { Module, forwardRef } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { AuthService } from './local_auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user.module';

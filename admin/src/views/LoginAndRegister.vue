@@ -155,16 +155,16 @@ export default class LoginAndRegisterPage extends Vue {
       state: "在读",
       degree: "",
       enroll_time: "2016",
-      stu_name: "",
+      name: "",
     },
     teacher: {
-      teacher_name: "",
+      name: "",
     },
     researcher: {
-      researcher_name: "",
+      name: "",
     },
     adviser: {
-      adviser_name: "",
+      name: "",
     },
   };
   rules = {
@@ -241,11 +241,24 @@ export default class LoginAndRegisterPage extends Vue {
   async register() {
     if (this.validate("form_register")) {
       this.loading = true;
-      // TODO 完成注册以及跳转;
-      var { role: any, relation: any, ...other } = this.form_register;
+      var { role: any, relation: any, stu,teacher,researcher,adviser, ...other } = this.form_register;
       var role = this.role;
       var relation = this.relation;
-      let b = { role, relation, ...other };
+      let b = null
+      switch (relation){
+          case 1:
+              teacher.name = other.realname
+              b = { role, relation,teacher, ...other };
+          case 2:
+              adviser.name = other.realname
+              b = { role, relation,adviser, ...other };
+          case 3:
+              researcher.name = other.realname
+              b = { role, relation,researcher, ...other };
+          case 4:
+              stu.name = other.realname
+              b = { role, relation, stu, ...other };
+      }
       const result = await UserApi.createAPI(myaxios, b);
       debugger;
       if (result.success) {
@@ -254,6 +267,10 @@ export default class LoginAndRegisterPage extends Vue {
           type: "success",
         });
         this.isLogin = true;
+      }else{
+          this.$message.error({
+              message:result.data.message
+          })
       }
       this.loading = false;
     }
@@ -276,10 +293,10 @@ export default class LoginAndRegisterPage extends Vue {
   }
   @Watch("form_register.realname", { immediate: false })
   changeName(newVal: string, oldVal: string) {
-    this.form_register.stu.stu_name = newVal;
-    this.form_register.adviser.adviser_name = newVal;
-    this.form_register.teacher.teacher_name = newVal;
-    this.form_register.researcher.researcher_name = newVal;
+    this.form_register.stu.name = newVal;
+    this.form_register.adviser.name = newVal;
+    this.form_register.teacher.name = newVal;
+    this.form_register.researcher.name = newVal;
   }
 }
 </script>

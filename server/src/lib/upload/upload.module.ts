@@ -4,7 +4,7 @@ import { Module } from "@nestjs/common";
 import { ImgUploadService, localUploader } from "./upload.sevice";
 const my_module = MulterModule.registerAsync({
     useFactory: async () => ({
-      dest: configService.getValue('MULTER_DEST'),
+    //   dest: configService.getValue('MULTER_DEST'),
     }),
   });
 

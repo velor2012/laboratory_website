@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, JoinColumn, OneToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsOptional, IsNumber } from 'class-validator';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity('stu')
 export class Stu {
@@ -51,13 +52,10 @@ export class Stu {
     nullable:true
   })
   research_orientation?: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiProperty({required: false, description: '学生头像路径' })
-  @Column()
-  avatar?: string;
   
+  @OneToOne((type) => User, (user) => user.stu)
+  user: User;
+
   @BeforeInsert()
   @BeforeUpdate()
   updateDates() {

@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsNumber, IsString } from 'class-validator';
+import { User } from 'src/user/entities/user.entity';
 
 @Entity('adviser')
 export class Adviser {
@@ -28,10 +29,7 @@ export class Adviser {
   @ApiProperty({required: false,description: '顾问的联系方式' })
   @Column({nullable:true})
   contact_info?: string;
-
-  @IsString()
-  @IsOptional()
-  @ApiProperty({required: false,description: '顾问的头像路径' })
-  @Column()
-  avatar?: string;
+  
+  @OneToOne((type) => User, (user) => user.stu)
+  user: User;
 }

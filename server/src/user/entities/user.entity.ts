@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, ManyToMany, JoinTable, OneToOne, JoinColumn } from 'typeorm';
 import * as moment from 'moment';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumberString,IsString, IsNumber, IsNotEmpty, IsOptional } from 'class-validator';
@@ -8,6 +8,10 @@ import { Competition } from 'src/competition/entities/competition.entity';
 import { Paper } from 'src/paper/entities/paper.entity';
 import * as bcrypt from 'bcrypt'
 import * as _ from 'lodash'
+import { Stu } from 'src/stu/entities/stu.entity';
+import { Teacher } from 'src/teacher/entities/teacher.entity';
+import { Adviser } from 'src/adviser/entities/adviser.entity';
+import { Researcher } from 'src/researcher/entities/researcher.entity';
 @Entity('user')
 export class User {
   @IsNumber()
@@ -58,6 +62,27 @@ export class User {
   @Column()
   relation: number;
   
+  @OneToOne((type) => Stu, (stu) => stu.user,{cascade:true})
+  @IsOptional()
+  @ApiProperty({ required: false,description: '当前用户为学生时，对应的学生身份信息' })
+  @JoinColumn()
+  stu?: Stu;
+  @OneToOne((type) => Teacher, (teacher) => teacher.user,{cascade:true})
+  @IsOptional()
+  @ApiProperty({ required: false,description: '当前用户为教师时，对应的教师身份信息'})
+  @JoinColumn()
+  teacher?: Teacher;
+  @OneToOne((type) => Adviser, (adviser) => adviser.user,{cascade:true})
+  @IsOptional()
+  @ApiProperty({ required: false,description: '当前用户为顾问时，对应的顾问身份信息'})
+  @JoinColumn()
+  adviser?: Adviser;
+  @OneToOne((type) => Researcher, (researcher) => researcher.user,{cascade:true})
+  @IsOptional()
+  @ApiProperty({ required: false,description: '当前用户为researcher时，对应的researcher身份信息'})
+  @JoinColumn()
+  researcher?: Researcher;
+
   @IsNumber()
   @IsOptional()
   @ApiProperty({ required: true,description: '状态', example: 0 })

@@ -42,38 +42,28 @@ export class UserService {
     return await this.usersRepository.findOne({username:username});
   }
   async remove(id: number) {
-    return await this.usersRepository.delete(+id);
+    let res1 = null
+    let res2 = null
+    const a = await getManager().transaction(async TransactionManager=>{
+    let user = await TransactionManager.findOne(User,id,{relations:['teacher','stu','adviser','researcher']});
+    res2 = await TransactionManager.remove(User,user);
+    switch (user.relation){
+        case 1:
+            res1 = await TransactionManager.remove(Teacher,user.teacher);
+        case 2:
+            res1 = await TransactionManager.remove(Adviser,user.adviser);
+        case 3:
+            res1 = await TransactionManager.remove(Researcher,user.researcher);
+        case 4:
+            res1 = await TransactionManager.remove(Stu,user.stu);
+    }
+    }).catch(e=>{
+      throw new HttpException('删除失败',HttpStatus.BAD_REQUEST)
+    })
+    return {res1,res2};
   }
   async update(id: number, updateUserDto: UpdateUserDto) {
-    var p1: Teacher | Adviser | Researcher | Stu;
-    var user = this.usersRepository.create(updateUserDto)
-    let res = null
-    const a = await getManager().transaction(async TransactionManager=>{
-    user = TransactionManager.create(User,updateUserDto)
-    res = await TransactionManager.update(User,+id,user);
-    if(String(user.relation) == '1'){
-        // 老师
-        var teacher = TransactionManager.create(Teacher,{avatar:user.avatar})
-        res = await TransactionManager.update(Teacher,id,teacher)
-        }else if(String(user.relation) == '2'){
-        // 顾问
-        var adviser = TransactionManager.create(Adviser,{avatar:user.avatar})
-        res = await TransactionManager.update(Adviser,id,adviser)
-        }else if(String(user.relation) == '3'){
-        // 研究员
-        var researcher = TransactionManager.create(Researcher,{avatar:user.avatar})
-        res = await TransactionManager.update(Researcher,id,researcher)
-        }else if(String(user.relation) == '4'){
-        // 学生
-        var stu = TransactionManager.create(Stu,{avatar:user.avatar})
-        res = await TransactionManager.update(Stu,id,teacher)
-        }else{
-            throw new HttpException('BAD_REQUEST',HttpStatus.BAD_REQUEST)
-        }
-        }).catch(e=>{
-            throw new HttpException('创建失败',HttpStatus.BAD_REQUEST)
-        })
-    return res;
+    return await this.usersRepository.update(id,updateUserDto);
   }
 
   async upload(file:any,user:User){
@@ -84,49 +74,20 @@ export class UserService {
   async findRelationsByUserId(id: number,relation: string,pageSize:number,page:number) {
     return await this.usersRepository.createQueryBuilder()
     .relation(User, relation)
-    .of(id) // 也可以使用post id
+    .of(id)
     .loadMany();
   }
 
   async create(createUserDto: CreateUserDto) {
     var p1: Teacher | Adviser | Researcher | Stu;
-    var user: User
+    // var user: User
     const exite_user = await this.usersRepository.findOne({username:createUserDto.username})
     if(exite_user != null){
       throw new HttpException("用户已存在",HttpStatus.BAD_REQUEST)
     }
-    // // 加密密码
-    // createUserDto.password = bcrypt.hashSync(createUserDto.password ,10)
-    const a = await getManager().transaction(async TransactionManager=>{
-    user = TransactionManager.create(User,createUserDto)
-    user = await TransactionManager.save(User,user);
-    if(String(createUserDto.relation) == '1'){
-      // 老师
-      createUserDto.teacher.id = user.id
-      const teacher = TransactionManager.create(Teacher,createUserDto.teacher)
-      p1 = await TransactionManager.save(Teacher,teacher)
-    }else if(String(createUserDto.relation) == '2'){
-      // 顾问
-      createUserDto.adviser.id = user.id
-      const adviser = TransactionManager.create(Adviser,createUserDto.adviser)
-      p1 = await TransactionManager.save(Adviser,adviser)
-    }else if(String(createUserDto.relation) == '3'){
-      // 研究员
-      createUserDto.researcher.id = user.id
-      const researcher = TransactionManager.create(Researcher,createUserDto.researcher)
-      p1 = await TransactionManager.save(Researcher,researcher)
-    }else if(String(createUserDto.relation) == '4'){
-      // 学生
-      createUserDto.stu.id = user.id
-      const stu = TransactionManager.create(Stu,createUserDto.stu)
-      p1 = await TransactionManager.save(Stu,stu)
-    }else{
-      throw new HttpException('BAD_REQUEST',HttpStatus.BAD_REQUEST)
-    }
-    }).catch(e=>{
-      throw new HttpException('创建失败',HttpStatus.BAD_REQUEST)
-    })
-    return {p1,user}
+
+    const user = this.usersRepository.create(createUserDto);
+    return await this.usersRepository.save(user);
   }
 
   logout(user: User) { 

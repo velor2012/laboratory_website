@@ -158,7 +158,6 @@ import { Component, Vue } from "vue-property-decorator";
 import MyCompetitionApi from "@/api/competition";
 import myaxios from "@/plugins/axios";
 import { Form } from "element-ui";
-import { str2array, array2str } from "@/assets/filters";
 import MyUserAPI from "@/api/user";
 @Component({})
 export default class CompetitionList extends Vue {
@@ -348,7 +347,7 @@ page = 1;
 
     //重新加载数据
     this.loading = true;
-    const result2 = await MyCompetitionApi.findAllAPI(myaxios, 5, 1);
+    const result2 = await MyCompetitionApi.findAllAPI(myaxios, this.pageSize, this.page);
     if (result2.success) {
       this.competitions = result2.data;
     }

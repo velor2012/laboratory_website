@@ -16,6 +16,11 @@ export class StuService {
     return await this.stusRepository.find({skip:pageSize * (page - 1),take:pageSize});
   }
 
+  async findState(state:string, pageSize:number, page:number) {
+    // state = state ==
+    return await this.stusRepository.find({skip:pageSize * (page - 1),take:pageSize,where:[{state:state}]});
+  }
+
   async findOne(id: number) {
     return await this.stusRepository.findOne(id);
   }

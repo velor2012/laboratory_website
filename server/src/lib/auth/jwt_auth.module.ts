@@ -15,7 +15,7 @@ import { UserService } from 'src/user/user.service';
     PassportModule,
     JwtModule.register({
       secret: configService.getValue('JWT_SECRET'),
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   providers: [AuthService, LocalStrategy,JwtStrategy,UserService],

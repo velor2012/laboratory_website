@@ -1,0 +1,94 @@
+/*
+ *                        ::
+ *                       :;J7, :,                        ::;7:
+ *                       ,ivYi, ,                       ;LLLFS:
+ *                       :iv7Yi                       :7ri;j5PL
+ *                      ,:ivYLvr                    ,ivrrirrY2X,
+ *                      :;r@Wwz.7r:                :ivu@kexianli.
+ *                     :iL7::,:::iiirii:ii;::::,,irvF7rvvLujL7ur
+ *                    ri::,:,::i:iiiiiii:i:irrv177JX7rYXqZEkvv17
+ *                 ;i:, , ::::iirrririi:i:::iiir2XXvii;L8OGJr71i
+ *               :,, ,,:   ,::ir@mingyi.irii:i:::j1jri7ZBOS7ivv,
+ *                  ,::,    ::rv77iiiriii:iii:i::,rvLq@huhao.Li
+ *              ,,      ,, ,:ir7ir::,:::i;ir:::i:i::rSGGYri712:
+ *            :::  ,v7r:: ::rrv77:, ,, ,:i7rrii:::::, ir7ri7Lri
+ *           ,     2OBBOi,iiir;r::        ,irriiii::,, ,iv7Luur:
+ *         ,,     i78MBBi,:,:::,:,  :7FSL: ,iriii:::i::,,:rLqXv::
+ *         :      iuMMP: :,:::,:ii;2GY7OBB0viiii:i:iii:i:::iJqL;::
+ *        ,     ::::i   ,,,,, ::LuBBu BBBBBErii:i:i:i:i:i:i:r77ii
+ *       ,       :       , ,,:::rruBZ1MBBqi, :,,,:::,::::::iiriri:
+ *      ,               ,,,,::::i:  @arqiao.       ,:,, ,:::ii;i7:
+ *     :,       rjujLYLi   ,,:::::,:::::::::,,   ,:i,:,,,,,::i:iii
+ *     ::      BBBBBBBBB0,    ,,::: , ,:::::: ,      ,,,, ,,:::::::
+ *     i,  ,  ,8BMMBBBBBBi     ,,:,,     ,,, , ,   , , , :,::ii::i::
+ *     :      iZMOMOMBBM2::::::::::,,,,     ,,,,,,:,,,::::i:irr:i:::,
+ *     i   ,,:;u0MBMOG1L:::i::::::  ,,,::,   ,,, ::::::i:i:iirii:i:i:
+ *     :    ,iuUuuXUkFu7i:iii:i:::, :,:,: ::::::::i:i:::::iirr7iiri::
+ *     :     :rk@Yizero.i:::::, ,:ii:::::::i:::::i::,::::iirrriiiri::,
+ *      :      5BMBBBBBBSr:,::rv2kuii:::iii::,:i:,, , ,,:,:i@petermu.,
+ *           , :r50EZ8MBBBBGOBBBZP7::::i::,:::::,: :,:,::i;rrririiii::
+ *               :jujYY7LS0ujJL7r::,::i::,::::::::::::::iirirrrrrrr:ii:
+ *            ,:  :@kevensun.:,:,,,::::i:i:::::,,::::::iir;ii;7v77;ii;i,
+ *            ,,,     ,,:,::::::i:iiiii:i::::,, ::::iiiir@xingjief.r;7:i,
+ *         , , ,,,:,,::::::::iiiiiiiiii:,:,:::::::::iiir;ri7vL77rrirri::
+ *          :,, , ::::::::i:::i:::i:i::,,,,,:,::i:i:::iir;@Secbone.ii:::
+ * 
+ * @author: Wenyi Chen 
+ * postgraduate of Computer Vision,
+ * Wuhan University, Hubei , China 
+ * 
+ * @email: wenyichen@whu.edu.com or wenyichen550@gmail.com
+ * @Date: 2021-05-24 15:29:31
+ * @Description: file content
+ */
+
+ $font-size:(
+    xxs:0.6154rem,//8px
+  xs: 0.7692rem, //10px,实际上chrome会按12px展示
+  sm-1:0.8462rem,//11px
+  sm: 0.9231rem, //12px
+  md: 1rem, //13px
+  lg:1.0769rem, //14px
+  xl:1.2308rem, //16px
+  xxl:1.5rem
+);
+
+@each $sizekey,$size in $font-size {
+    .fs-#{$sizekey}{
+        font-size: $size;
+    }
+}
+
+$main-text-color:#4b6dc6;
+
+$colors: ("primary": #db9e3f,
+  "white": white,
+  "blue":#1982C4,
+  "cadet":#222E50,
+  "green-light":#BBD0B5,
+  "green":#28965A,
+  "purple":#6A4C93,
+  "opal":#85B6BA,
+  "blue-light-2":#9FBBCC,
+  "blue-light-1":#8DACC9,
+  "violet":#8C6E91,
+  "red":#FF595E,
+  "grey-2":#d4d9de,
+  "main-amber":rgb(241,233,175),
+  "main-color":#4b6dc6
+);
+
+@each $colorKey,
+$color in $colors {
+  .text-#{$colorKey} {
+    color: $color;
+  }
+
+  .bg-#{$colorKey} {
+    background-color: $color;
+  }
+}
+
+.text-bold{
+    font-weight: bold!important;
+}

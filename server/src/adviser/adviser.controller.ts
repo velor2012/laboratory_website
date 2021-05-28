@@ -6,8 +6,8 @@ import { ApiTags } from '@nestjs/swagger';
 import Auth from 'src/lib/decorator/auth.decorator';
 import SearchDTO from 'src/lib/common_dto/search.dto';
 
-@ApiTags("adviser")
-@Controller('adviser')
+@ApiTags("advisers")
+@Controller('advisers')
 export class AdviserController {
   constructor(private readonly adviserService: AdviserService) {}
 

@@ -6,6 +6,7 @@ import {
     IsNotEmpty,
     IsJSON,
     IsOptional,
+    IsBoolean,
 } from "class-validator";
 import { Type } from "class-transformer";
 
@@ -27,4 +28,8 @@ export default class SearchDTO {
     @IsNumber()
     @Type(() => Number)
     page: number = 0;
+
+    @IsBoolean()
+    @Type(()=>Boolean)
+    withRelation:boolean = false;
 }

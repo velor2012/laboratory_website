@@ -4,7 +4,7 @@ import { initSwagger } from './lib/swagger.service';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
-
+import {configService} from './lib/config.service'
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe());
@@ -15,6 +15,6 @@ async function bootstrap() {
   //设置静态资源位置
   app.useStaticAssets(join(__dirname, '..', 'static'));
   initSwagger(app)
-  await app.listen(3000);
+  await app.listen(configService.getValue('PORT'));
 }
 bootstrap();

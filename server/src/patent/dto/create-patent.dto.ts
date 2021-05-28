@@ -1,1 +1,3 @@
-export class CreatePatentDto {}
+import { Patent } from "../entities/patent.entity";
+
+export class CreatePatentDto extends Patent{}

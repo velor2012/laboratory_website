@@ -7,8 +7,8 @@ import Auth from 'src/lib/decorator/auth.decorator';
 import { UserService } from 'src/user/user.service';
 import SearchDTO from 'src/lib/common_dto/search.dto';
 
-@ApiTags("teacher")
-@Controller('teacher')
+@ApiTags("teachers")
+@Controller('teachers')
 export class TeacherController {
   constructor(private readonly teacherService: TeacherService,private readonly userService: UserService) {}
 

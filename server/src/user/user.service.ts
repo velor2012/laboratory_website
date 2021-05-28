@@ -4,17 +4,11 @@ import { Repository, getManager, Transaction, TransactionManager, EntityManager 
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { CreateTeacherDto } from 'src/teacher/dto/create-teacher.dto';
-import { CreateAdviserDto } from 'src/adviser/dto/create-adviser.dto';
-import { CreateResearcherDto } from 'src/researcher/dto/create-researcher.dto';
-import { CreateStuDto } from 'src/stu/dto/create-stu.dto';
-import { async } from 'rxjs';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { Adviser } from 'src/adviser/entities/adviser.entity';
 import { Researcher } from 'src/researcher/entities/researcher.entity';
 import { Stu } from 'src/stu/entities/stu.entity';
 import * as _ from 'lodash';
-import * as bcrypt from 'bcrypt'
 import { ImgUploadService } from 'src/lib/upload/upload.sevice';
 @Injectable()
 export class UserService {
@@ -24,16 +18,26 @@ export class UserService {
     @Inject('ImgUploadService') private readonly ImgUploadService: ImgUploadService,
   ) {}
 
-  async findAll(pageSize:number, page:number) {
-    return await this.usersRepository.find({skip:pageSize * (page - 1),take:pageSize});
+  async findAll(pageSize:number, page:number,withRelation:boolean = false) {
+    return await this.usersRepository.find({skip:pageSize * (page - 1),take:pageSize,
+      relations:withRelation?["papers","competitions","projects","patents"]:[]});
   }
 
-  async findOne(id: number) {
-    return await this.usersRepository.findOne(+id);
+  async findAllName() {
+    return await this.usersRepository.find({select:['realname','id']});
   }
-  async findOneByName(username: string,selectPassword:boolean) {
+
+  async getTotal() {
+    return await this.usersRepository.count()
+  }
+
+  async findOne(id: number,withRelation:boolean = false) {
+    return await this.usersRepository.findOne(+id,{relations:withRelation?["papers","competitions","projects","patents"]:[]});
+  }
+  async findOneByName(username: string,selectPassword:boolean = false,withRelation:boolean = false) {
     if(selectPassword){
-      return await this.usersRepository.findOne({username:username},{select:["password","username","id"]});
+      return await this.usersRepository.findOne({username:username},{select:["password","username","id","role"],
+      relations:withRelation?["papers","competitions","projects","patents"]:[]});
     }
     return await this.usersRepository.findOne({username:username});
   }
@@ -41,8 +45,35 @@ export class UserService {
     return await this.usersRepository.delete(+id);
   }
   async update(id: number, updateUserDto: UpdateUserDto) {
+    var p1: Teacher | Adviser | Researcher | Stu;
     var user = this.usersRepository.create(updateUserDto)
-    return await this.usersRepository.update(+id,user);
+    let res = null
+    const a = await getManager().transaction(async TransactionManager=>{
+    user = TransactionManager.create(User,updateUserDto)
+    res = await TransactionManager.update(User,+id,user);
+    if(String(user.relation) == '1'){
+        // 老师
+        var teacher = TransactionManager.create(Teacher,{avatar:user.avatar})
+        res = await TransactionManager.update(Teacher,id,teacher)
+        }else if(String(user.relation) == '2'){
+        // 顾问
+        var adviser = TransactionManager.create(Adviser,{avatar:user.avatar})
+        res = await TransactionManager.update(Adviser,id,adviser)
+        }else if(String(user.relation) == '3'){
+        // 研究员
+        var researcher = TransactionManager.create(Researcher,{avatar:user.avatar})
+        res = await TransactionManager.update(Researcher,id,researcher)
+        }else if(String(user.relation) == '4'){
+        // 学生
+        var stu = TransactionManager.create(Stu,{avatar:user.avatar})
+        res = await TransactionManager.update(Stu,id,teacher)
+        }else{
+            throw new HttpException('BAD_REQUEST',HttpStatus.BAD_REQUEST)
+        }
+        }).catch(e=>{
+            throw new HttpException('创建失败',HttpStatus.BAD_REQUEST)
+        })
+    return res;
   }
 
   async upload(file:any,user:User){
@@ -50,7 +81,7 @@ export class UserService {
     return res
   }
 
-  async findRelationsByUserId(id: number,relation: string) {
+  async findRelationsByUserId(id: number,relation: string,pageSize:number,page:number) {
     return await this.usersRepository.createQueryBuilder()
     .relation(User, relation)
     .of(id) // 也可以使用post id
@@ -64,8 +95,8 @@ export class UserService {
     if(exite_user != null){
       throw new HttpException("用户已存在",HttpStatus.BAD_REQUEST)
     }
-    // 加密密码
-    createUserDto.password = bcrypt.hashSync(createUserDto.password ,10)
+    // // 加密密码
+    // createUserDto.password = bcrypt.hashSync(createUserDto.password ,10)
     const a = await getManager().transaction(async TransactionManager=>{
     user = TransactionManager.create(User,createUserDto)
     user = await TransactionManager.save(User,user);
@@ -101,7 +132,18 @@ export class UserService {
   logout(user: User) { 
       return 'ok'
   }
-
+  async deleteRelation(id:number,relation_name:string,relation:any){
+    return await this.usersRepository.createQueryBuilder()
+    .relation(User, relation_name)
+    .of(id) // 也可以使用post id
+    .remove(relation);
+  }
+  async addRelation(id:number,relation_name:string,relation:any){
+    return await this.usersRepository.createQueryBuilder()
+    .relation(User, relation_name)
+    .of(id) // 也可以使用post id
+    .add(relation);
+  }
 
   async user_auth_check(user_id1:number,user_role1:number,user_id2:number){
     if( user_id2==user_id1 || user_role1 == 1 ){

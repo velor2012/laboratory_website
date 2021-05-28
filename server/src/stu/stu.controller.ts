@@ -7,8 +7,8 @@ import Auth from 'src/lib/decorator/auth.decorator';
 import { UserService } from 'src/user/user.service';
 import SearchDTO from 'src/lib/common_dto/search.dto';
 
-@ApiTags("stu")
-@Controller('stu')
+@ApiTags("stus")
+@Controller('stus')
 export class StuController {
   constructor(
     private readonly stuService: StuService,
@@ -25,6 +25,13 @@ export class StuController {
   async findAll(@Query() searchDto: SearchDTO) {
     let {  pageSize, page } = searchDto 
     return await  this.stuService.findAll(+pageSize, +page);
+  }
+
+  @Get('state/:state')
+  @Auth("查找所有在读/已毕业学生")
+  async findState(@Query() searchDto: SearchDTO,@Param('state') state:string) {
+    let {  pageSize, page } = searchDto 
+    return await  this.stuService.findState(state,+pageSize, +page);
   }
 
   @Get(':id')

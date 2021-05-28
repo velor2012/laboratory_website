@@ -2,12 +2,12 @@ import { Entity, Column, PrimaryGeneratedColumn, BeforeUpdate, BeforeInsert, Man
 import { ApiProperty } from '@nestjs/swagger';
 import moment from 'moment';
 import { Stu } from 'src/stu/entities/stu.entity';
-import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsNumber } from 'class-validator';
 import { User } from 'src/user/entities/user.entity';
 
 @Entity('patent')
 export class Patent {
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   @PrimaryGeneratedColumn()
   id: number;
@@ -39,23 +39,28 @@ export class Patent {
   @IsString({each:true})
   @IsOptional()
   @ApiProperty({required: false,description: '相关人员',example:['肖晶','胡瑞敏'],type:[String] })
-  @Column("simple-array")
+  @Column({type:"simple-array",nullable:true})
   invent_name?: string[];
 
   @IsString()
   @IsOptional()
   @ApiProperty({required: false,description: '专利id',example:'201810710560.4' })
-  @Column()
+  @Column({nullable:true})
   authorized_id?: string
 
   @IsString()
   @IsOptional()
   @ApiProperty({required: false,description: '不知道是啥',example:'' })
-  @Column()
+  @Column({nullable:true})
   institution?:string
 
+  @IsString()
+  @IsOptional()
+  @ApiProperty({required: false, description: '专利地址',example:'https://xxxx.xx' })
+  @Column({nullable:true})
+  link?: string;
+
   @ManyToMany(() => User, user => user.patents)
-  @JoinTable()
   users: User[];
 
   @BeforeInsert()

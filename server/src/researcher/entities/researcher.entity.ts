@@ -13,32 +13,32 @@ export class Researcher {
   @IsString()
   @IsOptional()
   @ApiProperty({required: false, description: '研究员级别', example: 'A' })
-  @Column()
+  @Column({nullable:true})
   degree?: string;
 
   @IsString()
   @IsOptional()
   @ApiProperty({required: false, description: '研究员研究方向', example: '计算机视觉' })
-  @Column()
-  research_or?: string;
+  @Column({nullable:true})
+  research_orientation?: string;
 
   @IsString()
   @IsOptional()
   @ApiProperty({required: false, description: '研究员联系方式', example: 'xxx@qq.com' })
-  @Column()
-  contact_inf?: string;
+  @Column({nullable:true})
+  contact_info?: string;
 
   
   @IsString()
   @IsOptional()
   @ApiProperty({required: false, description: '研究员头像路径' })
   @Column()
-  imgUrl?: string;
+  avatar?: string;
 
   
   @IsString()
   @IsNotEmpty()
   @ApiProperty({required: true, description: '研究员姓名', example: '嘀嘀嘀' })
   @Column()
-  research_name: string;
+  name: string;
 }

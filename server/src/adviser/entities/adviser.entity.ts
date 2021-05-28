@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsNumber, IsString } from 'class-validator';
 
 @Entity('adviser')
 export class Adviser {
@@ -8,21 +9,29 @@ export class Adviser {
 
   @ApiProperty({required: false,description: '顾问名' })
   @Column()
-  advisers_na: string;
+  name: string;
 
+  @IsString()
+  @IsOptional()
   @ApiProperty({required: false,description: '顾问的级别' })
-  @Column()
-  degree: string;
+  @Column({nullable:true})
+  degree?: string;
 
+  @IsString()
+  @IsOptional()
   @ApiProperty({required: false,description: '顾问的研究方向' })
-  @Column()
-  research_or: string;
+  @Column({nullable:true})
+  research_orientation?: string;
 
+  @IsString()
+  @IsOptional()
   @ApiProperty({required: false,description: '顾问的联系方式' })
-  @Column()
-  contact_inf: string;
+  @Column({nullable:true})
+  contact_info?: string;
 
+  @IsString()
+  @IsOptional()
   @ApiProperty({required: false,description: '顾问的头像路径' })
   @Column()
-  imgUrl: string;
+  avatar?: string;
 }

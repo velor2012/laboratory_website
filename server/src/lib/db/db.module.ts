@@ -21,7 +21,7 @@ let my_module =   TypeOrmModule.forRootAsync({
     database: configService.getValue('DB_DATABASE'),
     connectTimeout:100000,
     acquireTimeout:100000,
-    // synchronize:true,
+    synchronize:true,
     entities: [
       User,
       Project,

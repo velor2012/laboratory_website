@@ -15,7 +15,7 @@ export class Stu {
   @IsNotEmpty()
   @ApiProperty({ required: true,description: '学生名称' })
   @Column()
-  stu_name: string;
+  name: string;
 
   
   @IsNumber()
@@ -31,6 +31,11 @@ export class Stu {
   @Column()
   state: string;
 
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ required: false,description: '学生就业方向',example:'中国电子科技集团有限公司'  })
+  @Column({nullable:true})
+  graduate_orientation?:string
   
   @IsString()
   @IsNotEmpty()
@@ -42,8 +47,16 @@ export class Stu {
   @IsString()
   @IsOptional()
   @ApiProperty({ required: false,description: '学生研究方向',example:'机器学习' })
+  @Column({
+    nullable:true
+  })
+  research_orientation?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({required: false, description: '学生头像路径' })
   @Column()
-  research_or?: string;
+  avatar?: string;
   
   @BeforeInsert()
   @BeforeUpdate()

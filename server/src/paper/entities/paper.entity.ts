@@ -1,9 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, ManyToMany, JoinTable } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsOptional, IsNotEmpty, IsNumber } from 'class-validator';
-import moment from 'moment';
 import { User } from 'src/user/entities/user.entity';
-
+import * as moment from 'moment';
+import { Project } from 'src/project/entities/project.entity';
 @Entity('paper')
 export class Paper {
   @IsNumber()
@@ -33,18 +33,20 @@ export class Paper {
   @IsString()
   @IsOptional()
   @ApiProperty({required: false,description: '论文链接' })
-  @Column()
+  @Column({nullable:true})
   link?: string;
 
   @IsString()
   @IsOptional()
   @ApiProperty({required: false,description: '论文发表时间',example:'2020' })
-  @Column()
+  @Column({nullable:true})
   year?: string;
 
   @ManyToMany(() => User, user => user.papers)
-  @JoinTable()
   users: User[];
+
+  @ManyToMany(() => Project, project => project.papers)
+  projects: Project[];
 
   @BeforeInsert()
   @BeforeUpdate()

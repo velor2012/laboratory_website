@@ -112,7 +112,7 @@
               <el-date-picker
                 v-model="formData.authorized_time"
                 type="datetime"
-                value-format="yyyyyy-MM-dd"
+                value-format="yyyy-MM-dd"
                 format="yyyy 年 MM 月 dd 日"
                 placeholder="选择日期"
               >

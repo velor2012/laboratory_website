@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeUpdate, BeforeInsert, ManyToMany, JoinTable } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import moment from 'moment';
+import * as moment from 'moment';
 import { Stu } from 'src/stu/entities/stu.entity';
 import { IsNotEmpty, IsString, IsOptional, IsNumber } from 'class-validator';
 import { User } from 'src/user/entities/user.entity';

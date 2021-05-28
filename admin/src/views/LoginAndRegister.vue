@@ -245,19 +245,24 @@ export default class LoginAndRegisterPage extends Vue {
       var role = this.role;
       var relation = this.relation;
       let b = null
+      debugger
       switch (relation){
           case 1:
               teacher.name = other.realname
               b = { role, relation,teacher, ...other };
+              break;
           case 2:
               adviser.name = other.realname
               b = { role, relation,adviser, ...other };
+              break;
           case 3:
               researcher.name = other.realname
               b = { role, relation,researcher, ...other };
+              break;
           case 4:
               stu.name = other.realname
               b = { role, relation, stu, ...other };
+              break;
       }
       const result = await UserApi.createAPI(myaxios, b);
       debugger;

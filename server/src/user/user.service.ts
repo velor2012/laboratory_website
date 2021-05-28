@@ -50,12 +50,16 @@ export class UserService {
     switch (user.relation){
         case 1:
             res1 = await TransactionManager.remove(Teacher,user.teacher);
+            break;
         case 2:
             res1 = await TransactionManager.remove(Adviser,user.adviser);
+            break;
         case 3:
             res1 = await TransactionManager.remove(Researcher,user.researcher);
+            break;
         case 4:
             res1 = await TransactionManager.remove(Stu,user.stu);
+            break;
     }
     }).catch(e=>{
       throw new HttpException('删除失败',HttpStatus.BAD_REQUEST)
